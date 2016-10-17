@@ -10,16 +10,16 @@ import UIKit
 
 class checkMarkButton: UIView {
     var isButtonSelected = false
-    var row = 0
     let emptyCheckMarkImage = UIImage(named: "emptyCheckMark")
     let filledCheckMarkImage = UIImage(named: "filledCheckMark")
+    var button: UIButton!
+    var buttonTag: Int!
     
     // MARK: Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         let buttonSize = Int(frame.size.height)
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
+        button = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize))
         
         button.setImage(emptyCheckMarkImage, for: .normal)
         button.setImage(filledCheckMarkImage, for: .selected)
@@ -33,6 +33,17 @@ class checkMarkButton: UIView {
     // MARK: Button Action
     func checkMarkButtonTapped(_ button: UIButton) {
         isButtonSelected = !isButtonSelected
+        toDoItems[buttonTag].isCompleted = isButtonSelected
+        ToDoItemTableViewController.saveToDoItems()
         button.isSelected = isButtonSelected
+    }   
+    
+    func setButtonSelected(_ isSelected: Bool) {
+        isButtonSelected = isSelected
+        button.isSelected = isButtonSelected
+    }
+    
+    func setButtonTag(_ tag: Int) {
+        buttonTag = tag
     }
 }

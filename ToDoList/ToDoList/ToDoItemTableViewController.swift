@@ -8,10 +8,11 @@
 
 import UIKit
 
+var toDoItems = [ToDoItem]()
+
 class ToDoItemTableViewController: UITableViewController {
     
     // MARK: Properties
-    var toDoItems = [ToDoItem]()
     
     func loadSampleItems() {
         let item1 = ToDoItem(task: "Sample", details: "Do this")!
@@ -68,8 +69,8 @@ class ToDoItemTableViewController: UITableViewController {
         let toDoItem = toDoItems[indexPath.row]
         cell.taskLabel.text = toDoItem.task
         cell.taskDetails.text = toDoItem.details
-        cell.checkMarkButton.isButtonSelected = toDoItem.isCompleted
-        cell.checkMarkButton.row = indexPath.row
+        cell.checkMarkButton.setButtonSelected(toDoItem.isCompleted)
+        cell.checkMarkButton.setButtonTag(indexPath.row)
         
         return cell
     }
@@ -78,8 +79,16 @@ class ToDoItemTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            // Before removing, update row values of every cell after the cell to be deleted by subtracting 1 row
+            // Don't subtract row value of current cell row, thus start at row + 1 instead of at row
+            let cells = self.tableView.visibleCells as! Array<TaskTableViewCell>
+            for row in (indexPath.row + 1)..<tableView.numberOfRows(inSection: 0) {
+                cells[row].checkMarkButton.setButtonTag(cells[row].checkMarkButton.buttonTag - 1)
+            }
+            // Delete toDoItem data at current row
             toDoItems.remove(at: indexPath.row)
-            saveToDoItems()
+            ToDoItemTableViewController.saveToDoItems()
+            // Delete cell at current row
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -105,12 +114,12 @@ class ToDoItemTableViewController: UITableViewController {
                 tableView.insertRows(at: [newIndexPath], with: .bottom)
             }
             // Save the items
-            saveToDoItems()
+            ToDoItemTableViewController.saveToDoItems()
         }
     }
     
     // MARK: NSCoding
-    func saveToDoItems() {
+    class func saveToDoItems() {
         let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(toDoItems, toFile: ToDoItem.ArchiveURL.path)
         if !isSuccessfulSave {
             print("Failed to save items...")
