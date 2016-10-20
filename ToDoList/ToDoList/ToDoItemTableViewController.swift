@@ -9,16 +9,25 @@
 import UIKit
 
 var toDoItems = [ToDoItem]()
+var completedCount = 0
+//var helloWorldTimer = Timer.scheduledTimerWithTimeInterval(60.0, target: self, selector: Selector("updateToDoList"), userInfo: nil, repeats: true)
+//func updateToDoList()
+//{
+//    // iterate through all to do items if time stamps are 24 hours apart, delete completed items and decrement completedCount
+//}
 
 class ToDoItemTableViewController: UITableViewController {
     
     // MARK: Properties
     
     func loadSampleItems() {
-        let item1 = ToDoItem(task: "Sample", details: "Do this")!
-        let item2 = ToDoItem(task: "Another sample", details: "Do that")!
+        let item1 = ToDoItem(task: "Tap me to edit.", details: "Do this")!
+        let item2 = ToDoItem(task: "Tap button on left to mark as completed", details: "Do that")!
+        let item3 = ToDoItem(task: "Completed tasks disappear after 24 hours", details: "")!
+        let item4 = ToDoItem(task: "All data is saved.", details: "Add stuff, delete stuff, close me, open me.")!
+        let item5 = ToDoItem(task: "Stats show completed tasks in past 24 hours", details: "")!
         
-        toDoItems += [item1, item2]
+        toDoItems += [item1, item2, item3, item4, item5]
     }
 
     override func viewDidLoad() {
@@ -29,6 +38,29 @@ class ToDoItemTableViewController: UITableViewController {
             // load the sample data
             loadSampleItems()
         }
+        for toDoItem in toDoItems {
+            if toDoItem.isCompleted {
+                completedCount += 1
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        func secondsToHours(seconds: Int) -> Int {
+            return seconds / 3600
+        }
+        var newToDoItemsList = [ToDoItem]()
+        for toDoItem in toDoItems {
+            let secondsSinceCompleted = Int(Date().timeIntervalSince(toDoItem.dateCompleted))
+            if toDoItem.isCompleted && (secondsToHours(seconds: secondsSinceCompleted) >= 24) {
+                completedCount -= 1
+            } else {
+                newToDoItemsList.append(toDoItem)
+            }
+        }
+        toDoItems = newToDoItemsList
+        // Reload all cells and their tags
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,7 +71,7 @@ class ToDoItemTableViewController: UITableViewController {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowDetail" {
+        if segue.identifier == "ShowDetails" {
             let toDoDetailViewController = segue.destination as! ToDoItemViewController
             // Get the cell that generated this segue.
             if let selectedToDoCell = sender as? TaskTableViewCell {
@@ -79,17 +111,17 @@ class ToDoItemTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            // Before removing, update row values of every cell after the cell to be deleted by subtracting 1 row
-            // Don't subtract row value of current cell row, thus start at row + 1 instead of at row
-            let cells = self.tableView.visibleCells as! Array<TaskTableViewCell>
-            for row in (indexPath.row + 1)..<tableView.numberOfRows(inSection: 0) {
-                cells[row].checkMarkButton.setButtonTag(cells[row].checkMarkButton.buttonTag - 1)
-            }
             // Delete toDoItem data at current row
+            if toDoItems[indexPath.row].isCompleted {
+                // If this item was marked as completed, then decrement the completedCount if the item is deleted
+                completedCount -= 1
+            }
             toDoItems.remove(at: indexPath.row)
             ToDoItemTableViewController.saveToDoItems()
-            // Delete cell at current row
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            // Reload all cells and their tags
+            self.tableView.reloadData()
+            // Delete cell at current row, this doesn't work since cell tags after current row need to be updated
+            // tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }

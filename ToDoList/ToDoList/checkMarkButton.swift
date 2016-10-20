@@ -33,11 +33,18 @@ class checkMarkButton: UIView {
     // MARK: Button Action
     func checkMarkButtonTapped(_ button: UIButton) {
         isButtonSelected = !isButtonSelected
+        if isButtonSelected {
+            toDoItems[buttonTag].setDateToCurrent()
+            completedCount += 1
+        } else {
+            completedCount -= 1
+        }
         toDoItems[buttonTag].isCompleted = isButtonSelected
         ToDoItemTableViewController.saveToDoItems()
         button.isSelected = isButtonSelected
     }   
     
+    // MARK: Set functions
     func setButtonSelected(_ isSelected: Bool) {
         isButtonSelected = isSelected
         button.isSelected = isButtonSelected

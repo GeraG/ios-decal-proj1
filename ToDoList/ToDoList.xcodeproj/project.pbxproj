@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C224F7D01DB75F6C0034EB2F /* ToDoListStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C224F7CF1DB75F6C0034EB2F /* ToDoListStatsViewController.swift */; };
 		C27C260D1DB3623C0071DB17 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27C260C1DB3623C0071DB17 /* AppDelegate.swift */; };
 		C27C260F1DB3623C0071DB17 /* ToDoItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C27C260E1DB3623C0071DB17 /* ToDoItemViewController.swift */; };
 		C27C26121DB3623C0071DB17 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C27C26101DB3623C0071DB17 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C224F7CF1DB75F6C0034EB2F /* ToDoListStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoListStatsViewController.swift; sourceTree = "<group>"; };
 		C27C26091DB3623C0071DB17 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C27C260C1DB3623C0071DB17 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C27C260E1DB3623C0071DB17 /* ToDoItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				C27C260C1DB3623C0071DB17 /* AppDelegate.swift */,
 				C27C260E1DB3623C0071DB17 /* ToDoItemViewController.swift */,
+				C224F7CF1DB75F6C0034EB2F /* ToDoListStatsViewController.swift */,
 				C2813F381DB3F38800C78AB7 /* ToDoItemTableViewController.swift */,
 				C2813F3A1DB3F49700C78AB7 /* ToDoItem.swift */,
 				C2813F361DB3EEDC00C78AB7 /* checkMarkButton.swift */,
@@ -277,6 +280,7 @@
 				C2813F3B1DB3F49700C78AB7 /* ToDoItem.swift in Sources */,
 				C2813F391DB3F38800C78AB7 /* ToDoItemTableViewController.swift in Sources */,
 				C27C260D1DB3623C0071DB17 /* AppDelegate.swift in Sources */,
+				C224F7D01DB75F6C0034EB2F /* ToDoListStatsViewController.swift in Sources */,
 				C27C263B1DB36A210071DB17 /* TaskTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
